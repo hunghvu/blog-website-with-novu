@@ -9,10 +9,13 @@ const novu = new Novu(process.env.NOVU_API_KEY);
 export const NewsletterSubscriber: CollectionConfig = {
   slug: "newsletter-subscribers",
   admin: {
-    useAsTitle: "title",
+    useAsTitle: "email",
   },
   access: {
-    create: () => true, // Public user can subscribe
+    // Public user can subscribe.
+    // By default, all other operations like "read", "update", etc. are restricted
+    // to only authorized users.
+    create: () => true,
   },
   fields: [
     {
@@ -33,7 +36,8 @@ export const NewsletterSubscriber: CollectionConfig = {
         const operation = args.operation;
         const email = args.doc.email;
         const internal_id = args.doc.id;
-        // Create and update subscriber
+        // Create and update subscriber, Novu recommends the use of internal id.
+        // Source: https://docs.novu.co/platform/subscribers
         operation === "create"
           ? novu.subscribers
               .identify(internal_id, { email })
