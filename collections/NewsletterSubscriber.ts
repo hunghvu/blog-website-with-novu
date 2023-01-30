@@ -35,16 +35,16 @@ export const NewsletterSubscriber: CollectionConfig = {
       (args) => {
         const operation = args.operation;
         const email = args.doc.email;
-        const internal_id = args.doc.id;
+        const internalId = args.doc.id;
         // Create and update subscriber, Novu recommends the use of internal id.
         // Source: https://docs.novu.co/platform/subscribers
         operation === "create"
           ? novu.subscribers
-              .identify(internal_id, { email })
+              .identify(internalId, { email })
               .catch((err) => console.error(err))
           : operation === "update"
           ? novu.subscribers
-              .update(internal_id, { email })
+              .update(internalId, { email })
               .catch((err) => console.error(err))
           : null;
       },
@@ -52,8 +52,8 @@ export const NewsletterSubscriber: CollectionConfig = {
     afterDelete: [
       (args) => {
         // Delete subscriber
-        const internal_id = args.doc.id;
-        novu.subscribers.delete(internal_id).catch((err) => console.error(err));
+        const internalId = args.doc.id;
+        novu.subscribers.delete(internalId).catch((err) => console.error(err));
       },
     ],
   },
