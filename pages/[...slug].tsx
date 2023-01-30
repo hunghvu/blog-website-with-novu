@@ -7,7 +7,6 @@ import NotFound from "../components/NotFound";
 import Head from "../components/Head";
 import classes from "../css/page.module.css";
 import RenderBlocks from "../components/RenderBlocks";
-import NewsletterSubscriber from "../collections/NewsletterSubscriber";
 import NewsletterRegistration from "../components/NewsletterRegistration";
 
 const {
