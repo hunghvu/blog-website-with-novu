@@ -3,17 +3,21 @@
 // The list is intended to be used for newsletter email.
 import { CollectionConfig } from "payload/types";
 import { Novu } from "@novu/node";
+
 const novu = new Novu(process.env.NOVU_API_KEY);
+
 export const NewsletterSubscriber: CollectionConfig = {
   slug: "newsletter-subscribers",
   admin: {
     useAsTitle: "title",
   },
   access: {
-      create: () => true // Public user can subscribe
+    create: () => true, // Public user can subscribe
   },
   fields: [
     {
+      // Payload CMS also allows field validation,
+      // This should be done in production code to avoid spam.
       name: "email",
       label: "Subscriber Email",
       type: "text",
@@ -31,9 +35,13 @@ export const NewsletterSubscriber: CollectionConfig = {
         const internal_id = args.doc.id;
         // Create and update subscriber
         operation === "create"
-          ? novu.subscribers.identify(internal_id, { email }).catch(err => console.error(err))
+          ? novu.subscribers
+              .identify(internal_id, { email })
+              .catch((err) => console.error(err))
           : operation === "update"
-          ? novu.subscribers.update(internal_id, { email }).catch(err => console.error(err))
+          ? novu.subscribers
+              .update(internal_id, { email })
+              .catch((err) => console.error(err))
           : null;
       },
     ],
@@ -41,7 +49,7 @@ export const NewsletterSubscriber: CollectionConfig = {
       (args) => {
         // Delete subscriber
         const internal_id = args.doc.id;
-        novu.subscribers.delete(internal_id).catch(err => console.error(err));
+        novu.subscribers.delete(internal_id).catch((err) => console.error(err));
       },
     ],
   },
